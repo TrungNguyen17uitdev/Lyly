@@ -5,7 +5,8 @@
     "baseUrl": ".",
     "paths": {
       "@rem/*": ["./src/*"],
-      "@env": ["./src/core/env.js"]
+      "@env": ["./src/core/env.js"],
+      "@firebase/auth": ["./node_modules/@firebase/auth/dist/index.rn.d.ts"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]

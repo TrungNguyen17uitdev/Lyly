@@ -1,19 +1,22 @@
-import { Stack } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
+import { hydrateAuth, useAuth } from '@rem/core'
+import { FocusAwareStatusBar } from '@rem/shared/ui'
+import { Redirect, Stack } from 'expo-router'
+
+hydrateAuth()
 
 const AuthLayout = () => {
-  // const { loading, isLogged } = useGlobalContext();
+  const user = useAuth.use.user()
 
-  // if (!loading && isLogged) return <Redirect href="/home" />;
+  if (user) return <Redirect href="/(app)/feed" />
 
   return (
     <>
       <Stack>
         <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+        <Stack.Screen name="sign-up" options={{ headerShown: false }} />
       </Stack>
 
-      {/* <Loader isLoading={loading} /> */}
-      <StatusBar backgroundColor="#161622" style="light" />
+      <FocusAwareStatusBar />
     </>
   )
 }

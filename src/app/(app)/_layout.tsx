@@ -1,3 +1,5 @@
+import { ThemeContext } from '@rem/context/theme-context'
+import { useAuth } from '@rem/core'
 import {
   AddSvg,
   HomeFillSvg,
@@ -8,10 +10,9 @@ import {
   SearchSvg,
   UserFillSvg,
   UserSvg,
-} from '@rem/components'
-import { ThemeContext } from '@rem/context/theme-context'
-import { Tabs } from 'expo-router'
-import React, { useContext } from 'react'
+} from '@rem/shared/ui'
+import { Redirect, SplashScreen, Tabs } from 'expo-router'
+import React, { useCallback, useContext, useEffect } from 'react'
 
 interface IconProps {
   active: boolean
@@ -58,15 +59,25 @@ const tabs: TabType[] = [
   },
 ]
 
-export const tabBarStyle = {}
-
 const AppLayout = () => {
-  // const status = useAuth.use.status()
   const theme = useContext(ThemeContext)
+  const status = useAuth.use.status()
 
-  // if (status === 'signOut') {
-  //   return <Redirect href="/login" />
-  // }
+  const hideSplash = useCallback(async () => {
+    await SplashScreen.hideAsync()
+  }, [])
+
+  useEffect(() => {
+    if (status !== 'idle') {
+      setTimeout(() => {
+        hideSplash()
+      }, 1000)
+    }
+  }, [hideSplash, status])
+
+  if (status === 'signOut') {
+    return <Redirect href="/sign-in" />
+  }
 
   return (
     <Tabs

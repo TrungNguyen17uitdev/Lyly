@@ -21,12 +21,14 @@ const LightTheme: Theme = {
 export const ThemeContext = createContext<Theme>(DefaultTheme)
 
 const ThemeProvider = ({ children }: PropsWithChildren) => {
-  const [colorTheme, setColorTheme] = useState(DefaultTheme)
+  const defaultTheme = Appearance.getColorScheme() === 'dark' ? DarkTheme : LightTheme
+  const [colorTheme, setColorTheme] = useState(defaultTheme)
 
   const onColorSchemeChange = useCallback(
     throttle(
       ({ colorScheme }) => {
         if (colorScheme === 'dark') {
+          console.log(colorScheme)
           setColorTheme(DarkTheme)
         } else {
           setColorTheme(LightTheme)
@@ -34,7 +36,7 @@ const ThemeProvider = ({ children }: PropsWithChildren) => {
       },
       250,
       {
-        leading: false,
+        leading: true,
       }
     ),
     []

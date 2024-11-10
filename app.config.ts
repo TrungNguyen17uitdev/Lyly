@@ -2,23 +2,29 @@ import type { ConfigContext, ExpoConfig } from '@expo/config'
 
 import { clientEnvironment, environment } from './env'
 
-let plugins = [
+const plugins: (string | [] | [string] | [string, any])[] | undefined = [
+  'expo-router',
+  'sentry-expo',
   [
-    'expo-router',
+    'expo-font',
     {
-      userTrackingPermission: false,
+      fonts: [
+        './assets/fonts/Libre_Caslon_Text/LibreCaslonText.ttf',
+        './assets/fonts/Libre_Caslon_Text/LibreCaslonText-Bold.ttf',
+        './assets/fonts/Libre_Caslon_Text/LibreCaslonText-Italic.ttf',
+      ],
     },
   ],
   [
-    'expo-image-picker',
+    'react-native-fbsdk-next',
     {
-      photosPermission: 'The app accesses your photos to let you upload a profile picture.',
+      appID: environment.FB_LOGIN_APPID,
+      clientToken: environment.FB_LOGIN_CLIENT_TOKEN,
+      displayName: environment.FB_LOGIN_APP_NAME,
+      scheme: environment.FB_LOGIN_SCHEMA,
     },
   ],
 ]
-if (process.env.SENTRY_DSN && process.env.SENTRY_DSN.length > 0) {
-  plugins.push(['sentry-expo'])
-}
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -36,8 +42,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     resizeMode: 'cover',
     backgroundColor: '#2E3C4B',
   },
+  runtimeVersion: {
+    policy: 'appVersion',
+  },
   updates: {
     fallbackToCacheTimeout: 0,
+    url: 'https://u.expo.dev/8e645247-bfd0-4237-94ed-9cf48fc91f87',
   },
   assetBundlePatterns: ['**/*'],
   ios: {
@@ -57,7 +67,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     favicon: './assets/favicon.png',
     bundler: 'metro',
   },
-  plugins: ['expo-router'],
+  plugins,
   extra: {
     ...clientEnvironment,
     eas: {

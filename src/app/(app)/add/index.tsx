@@ -5,7 +5,7 @@ import { Text, View } from 'react-native'
 const Add = () => {
   return (
     <View className="flex-1 items-center justify-center">
-      <Text className="text-red-700">Add works!!!</Text>
+      <Text className="text-green-700">Add works!!!</Text>
       <StatusBar style="auto" />
     </View>
   )

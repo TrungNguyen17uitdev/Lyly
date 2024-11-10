@@ -1,13 +1,16 @@
-import { StatusBar } from 'expo-status-bar'
+import { FocusAwareStatusBar, Text } from '@rem/shared/ui'
 import React from 'react'
-import { Text, View } from 'react-native'
+import { View } from 'react-native'
 
 const Account = () => {
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="text-red-700">Account works!!!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <FocusAwareStatusBar />
+
+      <View className="flex-1 items-center justify-center">
+        <Text className="text-red-700">Account works!!!</Text>
+      </View>
+    </>
   )
 }
 

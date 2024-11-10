@@ -5,7 +5,8 @@
  * We split the env variables into two parts:
  * 1. Client variables: These variables are used in the client-side code (src folder).
  * 2. Build-time variables: These variables are used in the build process (app.config.ts file).
- * Import this file into the `app.config.ts` file to use environment variables during the build process. The client variables can then be passed to the client-side using the extra field in the `app.config.ts` file.
+ * Import this file into the `app.config.ts` file to use environment variables during the build process.
+ * The client variables can then be passed to the client-side using the extra field in the `app.config.ts` file.
  * To access the client environment variables in your `src` folder, you can import them from `@env`. For example: `import Env from '@env'`.
  */
 /**
@@ -34,12 +35,12 @@ require('dotenv').config({
 
 // TODO: Replace these values with your own
 
-const BUNDLE_ID = 'com.rem' // ios bundle id
-const PACKAGE = 'com.rem' // android package name
-const NAME = 'rem' // app name
-const EXPO_ACCOUNT_OWNER = 'rem' // expo account owner
-const EAS_PROJECT_ID = 'c3e1075b-6fe7-4686-aa49-35b46a229044' // eas project id
-const SCHEME = 'rem' // app scheme
+const BUNDLE_ID = process.env.BUNDLE_ID // ios bundle id
+const PACKAGE = process.env.PACKAGE // android package name
+const NAME = process.env.NAME // app name
+const EXPO_ACCOUNT_OWNER = process.env.EXPO_ACCOUNT_OWNER // expo account owner
+const EAS_PROJECT_ID = process.env.EAS_PROJECT_ID // eas project id
+const SCHEME = process.env.SCHEME // app scheme
 
 /**
  * We declare a function withEnvSuffix that will add a suffix to the variable name based on the APP_ENV
@@ -80,15 +81,21 @@ const client = z.object({
 
   // ADD YOUR CLIENT ENV VARS HERE
   API_URL: z.string(),
-  VAR_NUMBER: z.number(),
-  VAR_BOOL: z.boolean(),
+  FIREBASE_CONFIG: z.string(),
 })
 
 const buildTime = z.object({
   EXPO_ACCOUNT_OWNER: z.string(),
   EAS_PROJECT_ID: z.string(),
+  BUNDLE_ID: z.string(),
+  PACKAGE: z.string(),
   // ADD YOUR BUILD TIME ENV VARS HERE
   SECRET_KEY: z.string(),
+
+  FB_LOGIN_APP_NAME: z.string(),
+  FB_LOGIN_APPID: z.string(),
+  FB_LOGIN_CLIENT_TOKEN: z.string(),
+  FB_LOGIN_SCHEMA: z.string(),
 })
 
 /**
@@ -96,16 +103,15 @@ const buildTime = z.object({
  */
 const _clientEnv = {
   APP_ENV,
-  NAME: NAME,
-  SCHEME: SCHEME,
+  NAME,
+  SCHEME,
   BUNDLE_ID: withEnvSuffix(BUNDLE_ID),
   PACKAGE: withEnvSuffix(PACKAGE),
   VERSION: packageJSON.version,
 
   // ADD YOUR ENV VARS HERE TOO
   API_URL: process.env.API_URL,
-  VAR_NUMBER: Number(process.env.VAR_NUMBER),
-  VAR_BOOL: process.env.VAR_BOOL === 'true',
+  FIREBASE_CONFIG: process.env.FIREBASE_CONFIG,
 }
 
 /**
@@ -114,8 +120,13 @@ const _clientEnv = {
 const _buildTimeEnv = {
   EXPO_ACCOUNT_OWNER,
   EAS_PROJECT_ID,
+
   // ADD YOUR ENV VARS HERE TOO
   SECRET_KEY: process.env.SECRET_KEY,
+  FB_LOGIN_APP_NAME: process.env.FB_LOGIN_APP_NAME,
+  FB_LOGIN_APPID: process.env.FB_LOGIN_APPID,
+  FB_LOGIN_CLIENT_TOKEN: process.env.FB_LOGIN_CLIENT_TOKEN,
+  FB_LOGIN_SCHEMA: process.env.FB_LOGIN_SCHEMA,
 }
 
 /**

@@ -1,3 +1,4 @@
+import { User } from 'firebase/auth'
 import { create } from 'zustand'
 import { getItem, removeItem, setItem } from '../storage'
 import { createSelectors } from './store'
@@ -16,6 +17,7 @@ export const setToken = (value: TokenType) => setItem<TokenType>(TOKEN, value)
 interface AuthState {
   token: TokenType | null
   status: 'idle' | 'signOut' | 'signIn'
+  user: User | null
   signIn: (data: TokenType) => void
   signOut: () => void
   hydrate: () => void
@@ -24,6 +26,7 @@ interface AuthState {
 const _useAuth = create<AuthState>((set, get) => ({
   status: 'idle',
   token: null,
+  user: null,
   signIn: (token) => {
     setToken(token)
     set({ status: 'signIn', token })

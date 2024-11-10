@@ -1,9 +1,9 @@
-import { FocusAwareStatusBar } from '@rem/components'
-import Header from '@rem/components/header'
+import Header from '@rem/components/feed/header'
+import { FocusAwareStatusBar } from '@rem/shared/ui'
 import { FlashList } from '@shopify/flash-list'
 import { styled } from 'nativewind'
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -44,7 +44,7 @@ const Feed = () => {
       </AnimatedView> */}
       <Header />
 
-      <View className="flex-grow flex-row mt-[56px]">
+      <View className="flex-grow flex-row">
         <FlashList
           data={new Array(30).fill(null)}
           estimatedItemSize={39}
@@ -63,36 +63,5 @@ const Feed = () => {
     </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  header: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 56,
-    backgroundColor: 'blue',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-  },
-  headerText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  item: {
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  itemText: {
-    fontSize: 16,
-  },
-})
 
 export default Feed
