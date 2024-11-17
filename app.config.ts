@@ -1,30 +1,24 @@
+/* eslint-disable max-lines-per-function */
 import type { ConfigContext, ExpoConfig } from '@expo/config'
+import type { AppIconBadgeConfig } from 'app-icon-badge/types'
 
 import { clientEnvironment, environment } from './env'
 
-const plugins: (string | [] | [string] | [string, any])[] | undefined = [
-  'expo-router',
-  'sentry-expo',
-  [
-    'expo-font',
+const appIconBadgeConfig: AppIconBadgeConfig = {
+  enabled: environment.APP_ENV !== 'production',
+  badges: [
     {
-      fonts: [
-        './assets/fonts/Libre_Caslon_Text/LibreCaslonText.ttf',
-        './assets/fonts/Libre_Caslon_Text/LibreCaslonText-Bold.ttf',
-        './assets/fonts/Libre_Caslon_Text/LibreCaslonText-Italic.ttf',
-      ],
+      text: environment.APP_ENV,
+      type: 'banner',
+      color: 'white'
     },
-  ],
-  [
-    'react-native-fbsdk-next',
     {
-      appID: environment.FB_LOGIN_APPID,
-      clientToken: environment.FB_LOGIN_CLIENT_TOKEN,
-      displayName: environment.FB_LOGIN_APP_NAME,
-      scheme: environment.FB_LOGIN_SCHEMA,
-    },
-  ],
-]
+      text: environment.VERSION.toString(),
+      type: 'ribbon',
+      color: 'white'
+    }
+  ]
+}
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -37,41 +31,76 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic',
-  splash: {
-    image: './assets/splash.png',
-    resizeMode: 'cover',
-    backgroundColor: '#2E3C4B',
-  },
-  runtimeVersion: {
-    policy: 'appVersion',
-  },
+  newArchEnabled: true,
   updates: {
     fallbackToCacheTimeout: 0,
-    url: 'https://u.expo.dev/8e645247-bfd0-4237-94ed-9cf48fc91f87',
+    url: 'https://u.expo.dev/8e645247-bfd0-4237-94ed-9cf48fc91f87'
   },
   assetBundlePatterns: ['**/*'],
   ios: {
     supportsTablet: true,
-    bundleIdentifier: environment.BUNDLE_ID,
+    googleServicesFile: './GoogleService-Info.plist',
+    bundleIdentifier: environment.BUNDLE_ID
   },
   experiments: {
-    typedRoutes: true,
+    typedRoutes: true
   },
   android: {
     adaptiveIcon: {
-      backgroundColor: '#2E3C4B',
+      foregroundImage: './assets/adaptive-icon.png',
+      backgroundColor: '#2E3C4B'
     },
-    package: environment.PACKAGE,
+    googleServicesFile: './google-services.json',
+    package: environment.PACKAGE
   },
   web: {
     favicon: './assets/favicon.png',
-    bundler: 'metro',
+    bundler: 'metro'
   },
-  plugins,
+  plugins: [
+    [
+      'expo-splash-screen',
+      {
+        backgroundColor: '#2E3C4B',
+        image: './assets/splash-icon.png',
+        imageWidth: 150
+      }
+    ],
+    [
+      'expo-font',
+      {
+        fonts: [
+          './assets/fonts/Libre_Caslon_Text/LibreCaslonText.ttf',
+          './assets/fonts/Libre_Caslon_Text/LibreCaslonText-Bold.ttf',
+          './assets/fonts/Libre_Caslon_Text/LibreCaslonText-Italic.ttf'
+        ]
+      }
+    ],
+    '@react-native-firebase/app',
+    '@react-native-firebase/auth',
+    '@react-native-firebase/crashlytics',
+    '@react-native-firebase/analytics',
+    '@react-native-firebase/firestore',
+    '@react-native-firebase/messaging',
+    '@react-native-firebase/storage',
+    '@react-native-google-signin/google-signin',
+    [
+      'react-native-fbsdk-next',
+      {
+        appID: environment.FB_LOGIN_APPID,
+        clientToken: environment.FB_LOGIN_CLIENT_TOKEN,
+        displayName: environment.FB_LOGIN_APP_NAME,
+        scheme: environment.FB_LOGIN_SCHEMA
+      }
+    ],
+    'expo-localization',
+    'expo-router',
+    ['app-icon-badge', appIconBadgeConfig]
+  ],
   extra: {
     ...clientEnvironment,
     eas: {
-      projectId: environment.EAS_PROJECT_ID,
-    },
-  },
+      projectId: environment.EAS_PROJECT_ID
+    }
+  }
 })

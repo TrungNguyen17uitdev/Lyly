@@ -22,18 +22,8 @@ const APP_ENV = process.env.APP_ENV ?? 'development'
 const envPath = path.resolve(__dirname, `.env.${APP_ENV}`)
 
 require('dotenv').config({
-  path: envPath,
+  path: envPath
 })
-
-/**
- * 2nd part: Define some static variables for the app
- * Such as: bundle id, package name, app name.
- *
- * You can add them to the .env file but we think it's better to keep them here as as we use prefix to generate this values based on the APP_ENV
- * for example: if the APP_ENV is staging, the bundle id will be com.obytes.staging
- */
-
-// TODO: Replace these values with your own
 
 const BUNDLE_ID = process.env.BUNDLE_ID // ios bundle id
 const PACKAGE = process.env.PACKAGE // android package name
@@ -80,22 +70,21 @@ const client = z.object({
   VERSION: z.string(),
 
   // ADD YOUR CLIENT ENV VARS HERE
+  BASE_URL: z.string(),
   API_URL: z.string(),
-  FIREBASE_CONFIG: z.string(),
+  FIREBASE_CONFIG: z.string()
 })
 
 const buildTime = z.object({
   EXPO_ACCOUNT_OWNER: z.string(),
   EAS_PROJECT_ID: z.string(),
-  BUNDLE_ID: z.string(),
-  PACKAGE: z.string(),
   // ADD YOUR BUILD TIME ENV VARS HERE
   SECRET_KEY: z.string(),
 
   FB_LOGIN_APP_NAME: z.string(),
   FB_LOGIN_APPID: z.string(),
   FB_LOGIN_CLIENT_TOKEN: z.string(),
-  FB_LOGIN_SCHEMA: z.string(),
+  FB_LOGIN_SCHEMA: z.string()
 })
 
 /**
@@ -105,13 +94,14 @@ const _clientEnv = {
   APP_ENV,
   NAME,
   SCHEME,
-  BUNDLE_ID: withEnvSuffix(BUNDLE_ID),
-  PACKAGE: withEnvSuffix(PACKAGE),
+  BUNDLE_ID: withEnvSuffix(BUNDLE_ID + ''),
+  PACKAGE: withEnvSuffix(PACKAGE + ''),
   VERSION: packageJSON.version,
 
   // ADD YOUR ENV VARS HERE TOO
+  BASE_URL: process.env.BASE_URL,
   API_URL: process.env.API_URL,
-  FIREBASE_CONFIG: process.env.FIREBASE_CONFIG,
+  FIREBASE_CONFIG: process.env.FIREBASE_CONFIG
 }
 
 /**
@@ -120,13 +110,13 @@ const _clientEnv = {
 const _buildTimeEnv = {
   EXPO_ACCOUNT_OWNER,
   EAS_PROJECT_ID,
-
   // ADD YOUR ENV VARS HERE TOO
   SECRET_KEY: process.env.SECRET_KEY,
+
   FB_LOGIN_APP_NAME: process.env.FB_LOGIN_APP_NAME,
   FB_LOGIN_APPID: process.env.FB_LOGIN_APPID,
   FB_LOGIN_CLIENT_TOKEN: process.env.FB_LOGIN_CLIENT_TOKEN,
-  FB_LOGIN_SCHEMA: process.env.FB_LOGIN_SCHEMA,
+  FB_LOGIN_SCHEMA: process.env.FB_LOGIN_SCHEMA
 }
 
 /**
@@ -137,7 +127,7 @@ const _buildTimeEnv = {
  **/
 const _env = {
   ..._clientEnv,
-  ..._buildTimeEnv,
+  ..._buildTimeEnv
 }
 
 const merged = buildTime.merge(client)
@@ -160,5 +150,5 @@ const clientEnvironment = client.parse(_clientEnv)
 module.exports = {
   environment,
   clientEnvironment,
-  withEnvSuffix,
+  withEnvSuffix
 }

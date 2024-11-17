@@ -1,64 +1,34 @@
-// In Text.tsx
-import { styled } from 'nativewind'
+import type { TxKeyPath } from '@rem/core/i18n'
+import { translate } from '@rem/core/i18n'
 import React from 'react'
-import type { TextProps as RNTextProps } from 'react-native'
-import { Text as NNText } from 'react-native'
+import type { TextProps, TextStyle } from 'react-native'
+import { I18nManager, StyleSheet, Text as NNText } from 'react-native'
 import { twMerge } from 'tailwind-merge'
 
-const SText = styled(NNText)
-
-const fontWeights = {
-  thin: 'font-outfit-thin',
-  extralight: 'font-outfit-extralight',
-  light: 'font-outfit-light',
-  normal: 'font-outfit-regular',
-  medium: 'font-outfit-medium',
-  semibold: 'font-outfit-semibold',
-  bold: 'font-outfit-bold',
-  extrabold: 'font-outfit-extrabold',
-  black: 'font-outfit-black',
-}
-
-export interface TextProps extends RNTextProps {
-  variant?: keyof typeof textVariants
+interface Props extends TextProps {
   className?: string
-  weight?: keyof typeof fontWeights
+  tx?: TxKeyPath
 }
 
-export const textVariants = {
-  defaults: 'text-base text-white font-outfit-medium font-semibold',
-  xl: 'text-xl',
-  lg: 'text-lg',
-  md: 'text-base',
-  sm: 'text-sm',
-  xs: 'text-xs',
-  error: 'text-red-300',
-}
+export const Text = ({ className = '', style, tx, children, ...props }: Props) => {
+  const textStyle = React.useMemo(
+    () => twMerge('text-base text-black  dark:text-white  font-inter font-normal', className),
+    [className]
+  )
 
-export const Text = React.forwardRef(
-  (
-    {
-      variant = 'md',
-      className = '',
-      children,
-      weight = 'medium',
-      ...props
-    }: React.PropsWithChildren<TextProps>,
-    ref
-  ) => {
-    return (
-      <SText
-        ref={ref}
-        className={twMerge(
-          textVariants.defaults,
-          textVariants[variant],
-          fontWeights[weight],
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </SText>
-    )
-  }
-)
+  const nStyle = React.useMemo(
+    () =>
+      StyleSheet.flatten([
+        {
+          writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'
+        },
+        style
+      ]) as TextStyle,
+    [style]
+  )
+  return (
+    <NNText className={textStyle} style={nStyle} {...props}>
+      {tx ? translate(tx) : children}
+    </NNText>
+  )
+}

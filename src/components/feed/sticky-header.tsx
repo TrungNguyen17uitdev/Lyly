@@ -1,4 +1,5 @@
-import { Animated, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Text } from '@rem/shared/ui'
+import { Animated, ScrollView, StyleSheet, View } from 'react-native'
 
 const StickyHeader = () => {
   const scrollY = new Animated.Value(0)
@@ -6,13 +7,13 @@ const StickyHeader = () => {
   const headerHeight = scrollY.interpolate({
     inputRange: [0, 100],
     outputRange: [100, 60],
-    extrapolate: 'clamp',
+    extrapolate: 'clamp'
   })
 
   const logoOpacity = scrollY.interpolate({
     inputRange: [0, 100],
     outputRange: [1, 0],
-    extrapolate: 'clamp',
+    extrapolate: 'clamp'
   })
 
   return (
@@ -28,18 +29,16 @@ const StickyHeader = () => {
       <ScrollView
         style={styles.scrollView}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-          useNativeDriver: false,
+          useNativeDriver: false
         })}
-        scrollEventThrottle={16}
-      >
+        scrollEventThrottle={16}>
         {new Array(30).fill(null).map((_, index) => (
           <View
             key={index}
             className={
               'flex-1 items-center justify-center bg-white h-10' + (index % 2 && ' bg-red-500')
-            }
-          >
-            <Text className="text-fuchsia-100 text-3xl">Block {index}</Text>
+            }>
+            <Text className="text-3xl text-fuchsia-100">Block {index}</Text>
           </View>
         ))}
       </ScrollView>
@@ -49,7 +48,7 @@ const StickyHeader = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   header: {
     position: 'absolute',
@@ -59,29 +58,29 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 4,
+    elevation: 4
   },
   logo: {
     width: 80,
     height: 80,
     position: 'absolute',
-    top: 10,
+    top: 10
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   scrollView: {
-    marginTop: 100, // Adjust based on the header's initial height
+    marginTop: 100 // Adjust based on the header's initial height
   },
   content: {
     height: 1000, // Just for demo purposes
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   contentText: {
-    fontSize: 24,
-  },
+    fontSize: 24
+  }
 })
 
 export default StickyHeader

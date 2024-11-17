@@ -6,8 +6,6 @@ import { Image } from './image'
 
 interface AvatarProps extends ImageProps {}
 
-const Avatar: React.FC<AvatarProps> = ({ className, ...props }) => {
+export const Avatar: React.FC<AvatarProps> = ({ className, ...props }) => {
   return <Image className={twMerge('rounded-full', className)} {...props} />
 }
-
-export default Avatar
