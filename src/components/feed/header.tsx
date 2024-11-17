@@ -1,4 +1,4 @@
-import { ThemeContext } from '@rem/context/theme-context'
+import { ThemeContext } from '@rem/core/context'
 import { environment } from '@rem/core/env'
 import { HeartSvg, MessengerSvg } from '@rem/shared/ui'
 import React, { useContext } from 'react'
@@ -8,17 +8,17 @@ const Header = () => {
   const theme = useContext(ThemeContext)
 
   return (
-    <View className=" h-14 bg-white flex dark:bg-black flex-row items-center justify-between w-full px-4 py-3">
+    <View className=" flex h-14 w-full flex-row items-center justify-between bg-white px-4 py-3 dark:bg-black">
       {/* <LogoSvg color={theme.colors.text} /> */}
-      <Text className="font-LibreCaslonText italic leading-none text-2xl text-white">
+      <Text className="font-LibreCaslonText text-2xl italic leading-none text-white">
         {environment.NAME}
       </Text>
 
-      <View className="flex items-center flex-row gap-4">
-        <TouchableOpacity className="flex items-center justify-center p-0.5 m-1">
+      <View className="flex flex-row items-center gap-4">
+        <TouchableOpacity className="m-1 flex items-center justify-center p-0.5">
           <HeartSvg color={theme.colors.text} />
         </TouchableOpacity>
-        <TouchableOpacity className="flex items-center justify-center p-0.5 m-1">
+        <TouchableOpacity className="m-1 flex items-center justify-center p-0.5">
           <MessengerSvg color={theme.colors.text} />
         </TouchableOpacity>
       </View>

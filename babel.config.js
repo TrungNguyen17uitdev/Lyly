@@ -1,16 +1,15 @@
 module.exports = function (api) {
   api.cache(true)
   return {
-    presets: ['babel-preset-expo'],
+    presets: [['babel-preset-expo', { jsxImportSource: 'nativewind' }], 'nativewind/babel'],
     plugins: [
-      'nativewind/babel',
       [
         'module-resolver',
         {
           root: ['./'],
           alias: {
             '@rem': './src',
-            '@env': './src/core/env.js',
+            '@env': './src/core/env.js'
           },
           extensions: [
             '.ios.ts',
@@ -21,11 +20,11 @@ module.exports = function (api) {
             '.tsx',
             '.jsx',
             '.js',
-            '.json',
-          ],
-        },
+            '.json'
+          ]
+        }
       ],
-      'react-native-reanimated/plugin',
-    ],
+      'react-native-reanimated/plugin'
+    ]
   }
 }

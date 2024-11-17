@@ -1,9 +1,6 @@
-import type { ImageProps } from 'expo-image'
-import { Image as NImage } from 'expo-image'
-import { styled } from 'nativewind'
-import * as React from 'react'
+import { Image as NImage, ImageProps } from 'expo-image'
+import { useState } from 'react'
 
-const SImage = styled(NImage)
 export type ImgProps = ImageProps & {
   className?: string
 }
@@ -15,16 +12,16 @@ export const Image = ({
   source,
   ...props
 }: ImgProps) => {
-  const [isError, setIsError] = React.useState(false)
+  const [isError, setIsError] = useState(false)
 
   return (
-    <SImage
+    <Image
       className={className}
       placeholder={placeholder}
       style={style}
       transition={{
         effect: 'cross-dissolve',
-        duration: 200,
+        duration: 200
       }}
       onError={() => setIsError(true)}
       source={isError ? require('../../../assets/image-fallback.png') : source}
